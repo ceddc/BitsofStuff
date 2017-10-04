@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
-  <title>Animate color visual variable - 4.5</title>
+  <title>Evolution de la construction des bâtiments de Paris</title>
 
   <link rel="stylesheet" href="https://js.arcgis.com/4.5/esri/themes/dark-blue/main.css">
 
@@ -16,7 +16,19 @@
       }
     };
   </script>
+  <!-- Global Site Tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-92318045-2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
 
+    gtag('config', 'UA-92318045-2');
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.0/gh-fork-ribbon.min.css" />
+  <!--[if lt IE 9]>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.0/gh-fork-ribbon.ie.min.css" />
+  <![endif]-->
   <script src="https://js.arcgis.com/4.5/"></script>
 
   <style>
@@ -177,11 +189,13 @@
 
       var layer = new FeatureLayer({
         portalItem: {
-          id: "dfe2d606134546f5a712e689d76540ac"
+          id: "739c3c3d463f4ff2b594c683364d3874"
         },
-        definitionExpression: "CNSTRCT_YR > 0",
-        title: "Building Footprints",
-        minScale: 72223.819286
+        definitionExpression: "AN_CONST > 0",
+        title: "Emprise des bâtiments",
+        minScale: 72223.819286,
+        //racourcis
+        copyright: "<a href=\"http://opendata.apur.org\">Plateforme Open Data - Apur</a> | <a href=\"https://github.com/ceddc/BitsofStuff/ArcGIS-Javascript-45-Paris-Buildings\">About</a> this dataviz"
       });
 
       var map = new Map({
@@ -196,11 +210,11 @@
       view = new MapView({
         map: map,
         container: "viewDiv",
-        center: [-73.967569, 40.727724],
-        zoom: 12,
+        center: [2.349014, 48.864716],
+        zoom: 11,
         constraints: {
           snapToZoom: false,
-          minScale: 72223.819286
+         minScale: 72223.819286
         },
         // This ensures that when going fullscreen
         // The top left corner of the view extent
@@ -253,9 +267,13 @@
 
       // When the layerview is available, setup hovering interactivity
       view.whenLayerView(layer).then(setupHoverTooltip);
+      view.whenLayerView(layer).then(layer.fetchAttributionData())
+
+
+
 
       // Starts the application by visualizing year 1984
-      setYear(1984);
+      setYear(1789);
 
       //--------------------------------------------------------------------------
       //
@@ -299,29 +317,29 @@
           },
           visualVariables: [{
             type: "opacity",
-            field: "CNSTRCT_YR",
+            field: "AN_CONST",
             stops: opacityStops,
             legendOptions: {
               showLegend: false
             }
           }, {
             type: "color",
-            field: "CNSTRCT_YR",
+            field: "AN_CONST",
             legendOptions: {
-              title: "Built:"
+              title: "Bâtiments construits:"
             },
             stops: [{
               value: year,
               color: "#0ff",
-              label: "in " + Math.floor(year)
+              label: "en " + Math.floor(year)
             }, {
               value: year - 10,
               color: "#f0f",
-              label: "in " + (Math.floor(year) - 20)
+              label: "en " + (Math.floor(year) - 20)
             }, {
               value: year - 50,
               color: "#404",
-              label: "before " + (Math.floor(year) - 50)
+              label: "avant " + (Math.floor(year) - 50)
             }]
           }]
         };
@@ -359,8 +377,8 @@
                 var screenPoint = hit.screenPoint;
 
                 highlight = layerview.highlight(graphic);
-                tooltip.show(screenPoint, "Built in " + graphic.getAttribute(
-                  "CNSTRCT_YR"));
+                tooltip.show(screenPoint, "Bâtiment construit en " + graphic.getAttribute(
+                  "AN_CONST"));
               }
               else {
                 tooltip.hide();
@@ -406,7 +424,7 @@
 
           value += 0.5;
           if (value > 2017) {
-            value = 1880;
+            value = 1600;
           }
 
           setYear(value);
@@ -559,7 +577,7 @@
 <body>
   <div id="applicationDiv">
     <div id="viewDiv">
-      <div id="titleDiv" class="esri-widget">New York Construction</div>
+      <div id="titleDiv" class="esri-widget">Evolution de la construction des bâtiments de Paris</div>
       <div id="fullScreenButton" class="esri-widget esri-widget-button">
         <span class="esri-icon-zoom-out-fixed" aria-label="fullscreen icon"></span>
       </div>
@@ -568,11 +586,11 @@
       <span id="sliderValue"></span>
       <div id="sliderInnerContainer">
         <div id="sliderLabels">
-          <span>1880</span>
+          <span>1600</span>
           <span>2017</span>
         </div>
         <div id="rangeWrapper">
-          <input id="slider" type="range" min="1880" max="2017" step="1" value="1984" />
+          <input id="slider" type="range" min="1600" max="2017" step="1" value="1789" />
         </div>
       </div>
       <div id="playButton" class="esri-widget esri-widget-button toggle-button">
@@ -581,6 +599,6 @@
       </div>
     </div>
   </div>
-</body>
 
+</body>
 </html>
