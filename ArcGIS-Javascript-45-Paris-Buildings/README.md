@@ -1,6 +1,6 @@
 # Paris building construction visualization (200k+)
 
-[You can check the app here](/ConstructionParis.html)
+[You can check the app here](ConstructionParis.html)
 
 This weekend the 4.5 version of the ArcGIS API for JavaScript have been released, and it's great.
 
