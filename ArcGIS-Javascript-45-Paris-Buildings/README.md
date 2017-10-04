@@ -6,7 +6,7 @@ Especially this new beta function to render featurelayers in WebGL.
 
 Esri blog post : [FeatureLayer rendering: taking advantage of WebGL in 2D](https://blogs.esri.com/esri/arcgis/2017/09/29/featurelayer-taking-advantage-of-webgl-2d/)
 
-Sooo, there is a nice demo about New York building construction, and it's really nice.
+Sooo, there is a nice demo about New York building construction, and it's really sweet.
 
 The source code is here : https://developers.arcgis.com/javascript/latest/sample-code/visualization-vv-color-animate/index.html
 
