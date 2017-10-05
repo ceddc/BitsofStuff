@@ -34,5 +34,6 @@ Then replace some variables and enjoy.
 
 
 Want to learn more about this dataviz?
-Learn ArcGIS : <http://learn.arcgis.com/en/>
-ArcGIS API for JavaScript : <https://developers.arcgis.com/javascript/>
+
+* Learn ArcGIS : <http://learn.arcgis.com/en/>
+* ArcGIS API for JavaScript : <https://developers.arcgis.com/javascript/>
