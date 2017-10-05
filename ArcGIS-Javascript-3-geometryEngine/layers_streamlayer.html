@@ -285,11 +285,11 @@
 
 
       streamLayer.on("update-end", function() {
-        var symbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE, 10,
+        var symbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE, 5,
           new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,
             new Color([255,255,255]), 1),
           new Color([0, 12, 12, 8]));
-
+        var lineSymbol = new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([0, 0, 255, 0.25]), 1)
         var d = new Date();
         // update time
         var len = streamLayer.graphics.length;
@@ -298,8 +298,14 @@
 
         //gLayer.clear();
         for (var i = 0; i < len; i++) {
+          var basePoint = streamLayer.graphics[i].geometry
           var result = geometryEngine.nearestCoordinate(line, streamLayer.graphics[i].geometry);
-            map.graphics.add(new Graphic(result.coordinate, symbol));
+          var projectedPoint = result.coordinate;
+          map.graphics.add(new Graphic(projectedPoint, symbol));
+          var projectLine = new Polyline(map.spatialReference);
+          projectLine.addPath([basePoint,projectedPoint]);
+          //console.log(lineSymbol);
+          map.graphics.add(new Graphic(projectLine, lineSymbol));
         }
 
         console.log(d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds() + ":" + d.getMilliseconds() + " end update - Graphics : " + streamLayer.graphics.length);
