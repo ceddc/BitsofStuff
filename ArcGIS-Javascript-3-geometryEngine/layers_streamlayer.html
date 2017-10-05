@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+  <title>StreamLayer using ArcGIS API for JavaScript and ArcGIS Server Stream Service</title>
+  <link rel="stylesheet" href="https://js.arcgis.com/3.22/dijit/themes/tundra/tundra.css">
+  <link rel="stylesheet" href="https://js.arcgis.com/3.22/esri/css/esri.css">
+  <style type="text/css">
+    html,
+    body {
+      height: 100%;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #fff;
+      overflow: hidden;
+      font-family: sans-serif;
+    }
+
+    p {
+      margin: 2px;
+    }
+
+    .controls {
+      margin-left: 10px;
+      padding-top: 10px;
+    }
+
+    #map {
+      width: 100%;
+      height: 80%;
+    }
+  </style>
+  <script src="https://js.arcgis.com/3.22/"></script>
+</head>
+
+<body class="tundra">
+  <div id="map"></div>
+</body>
+<script>
+  var map,
+    streamLayer,
+    line,
+    gLayer;
+  require(["esri/map",
+    "esri/toolbars/draw",
+    "esri/layers/StreamLayer",
+    "esri/InfoTemplate",
+    "esri/graphic",
+    "esri/renderers/SimpleRenderer",
+    "esri/geometry/Polyline",
+
+    "esri/symbols/SimpleMarkerSymbol", "esri/symbols/SimpleLineSymbol", "esri/Color",
+    "esri/layers/GraphicsLayer",
+    "esri/geometry/geometryEngine",
+    "esri/geometry/webMercatorUtils",
+    "dojo/_base/Color",
+    "dojo/on",
+    "dojo/domReady!"
+  ], function(Map, Draw, StreamLayer, InfoTemplate, Graphic, SimpleRenderer, Polyline,
+    SimpleMarkerSymbol, SimpleLineSymbol, Color, GraphicsLayer, geometryEngine,webMercatorUtils,
+    Color, on) {
+
+
+
+    function init() {
+      map = new Map("map", {
+        basemap: "gray",
+        center: [-117.16936111450195, 32.80632186501808],
+        zoom: 4
+      });
+
+      line = Polyline([
+          [
+            -70.48828125,
+            39.095962936305476
+          ],
+          [
+            -72.24609375,
+            43.32517767999296
+          ],
+          [
+            -74.00390625,
+            40.04443758460856
+          ],
+          [
+            -76.640625,
+            42.68243539838623
+          ],
+          [
+            -77.87109375,
+            37.020098201368114
+          ],
+          [
+            -84.72656249999999,
+            41.64007838467894
+          ],
+          [
+            -90.17578124999999,
+            45.706179285330855
+          ],
+          [
+            -89.82421875,
+            38.272688535980976
+          ],
+          [
+            -94.21875,
+            44.33956524809713
+          ],
+          [
+            -95.44921875,
+            48.574789910928864
+          ],
+          [
+            -104.94140625,
+            47.040182144806664
+          ],
+          [
+            -99.84374999999999,
+            40.3130432088809
+          ],
+          [
+            -107.05078125,
+            41.376808565702355
+          ],
+          [
+            -109.6875,
+            46.92025531537451
+          ],
+          [
+            -117.0703125,
+            47.040182144806664
+          ],
+          [
+            -120.76171875,
+            43.45291889355465
+          ],
+          [
+            -120.76171875,
+            37.71859032558816
+          ],
+          [
+            -113.203125,
+            33.578014746143985
+          ],
+          [
+            -114.78515624999999,
+            41.77131167976407
+          ],
+          [
+            -115.13671875,
+            44.465151013519616
+          ],
+          [
+            -111.4453125,
+            43.96119063892024
+          ],
+          [
+            -108.10546875,
+            40.58058466412761
+          ],
+          [
+            -109.51171875,
+            33.87041555094183
+          ],
+          [
+            -111.09374999999999,
+            27.527758206861886
+          ],
+          [
+            -107.75390625,
+            23.563987128451217
+          ],
+          [
+            -97.734375,
+            22.105998799750566
+          ],
+          [
+            -96.85546875,
+            28.14950321154457
+          ],
+          [
+            -102.48046875,
+            31.952162238024975
+          ],
+          [
+            -104.0625,
+            36.73888412439431
+          ],
+          [
+            -98.96484375,
+            38.685509760012
+          ],
+          [
+            -96.15234375,
+            38.41055825094609
+          ],
+          [
+            -97.20703125,
+            42.5530802889558
+          ],
+          [
+            -89.47265625,
+            35.17380831799959
+          ],
+          [
+            -97.3828125,
+            31.653381399664
+          ],
+          [
+            -93.33984375,
+            29.84064389983441
+          ],
+          [
+            -86.8359375,
+            30.90222470517144
+          ],
+          [
+            -82.96875,
+            34.59704151614417
+          ],
+          [
+            -85.60546875,
+            39.232253141714885
+          ],
+          [
+            -80.68359375,
+            35.88905007936091
+          ],
+          [
+            -78.75,
+            32.69486597787505
+          ],
+          [
+            -81.2109375,
+            26.588527147308614
+          ],
+          [
+            -79.62890625,
+            22.268764039073968
+          ],
+          [
+            -65.91796875,
+            28.14950321154457
+          ],
+          [
+            -67.1484375,
+            34.016241889667015
+          ]
+        ]);
+      line = webMercatorUtils.geographicToWebMercator(line)
+      var graphic = new Graphic(line, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255, 0, 0]), 3));
+
+      gLayer = new GraphicsLayer();
+
+      map.on("load", function() {
+        addStreamLayer();
+
+        gLayer.add(graphic);
+        map.addLayer(gLayer);
+
+      })
+    }
+
+    function addStreamLayer() {
+      //(url found on google)
+      var svcUrl = "http://ec2-75-101-155-202.compute-1.amazonaws.com:6080/arcgis/rest/services/ASDITrackInformation/StreamServer"
+
+      //construct Stream Layer
+      streamLayer = new StreamLayer(svcUrl, {
+        purgeOptions: {
+          displayCount: 10000
+        },
+      });
+      //When layer loads, register listeners for layer events and add layer to map
+      streamLayer.on("load", function() {
+        //Add layer to map
+        map.addLayer(streamLayer);
+      });
+
+
+      streamLayer.on("update-end", function() {
+        var symbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE, 10,
+          new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,
+            new Color([255,255,255]), 1),
+          new Color([0, 12, 12, 8]));
+
+        var d = new Date();
+        // update time
+        var len = streamLayer.graphics.length;
+          map.graphics.clear();
+        console.log(d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds() + ":" + d.getMilliseconds() + " update - Graphics : " + len);
+
+        //gLayer.clear();
+        for (var i = 0; i < len; i++) {
+          var result = geometryEngine.nearestCoordinate(line, streamLayer.graphics[i].geometry);
+            map.graphics.add(new Graphic(result.coordinate, symbol));
+        }
+
+        console.log(d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds() + ":" + d.getMilliseconds() + " end update - Graphics : " + streamLayer.graphics.length);
+      });
+    }
+
+    init();
+  });
+</script>
+
+</html>
