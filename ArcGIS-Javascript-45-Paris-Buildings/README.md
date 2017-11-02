@@ -27,7 +27,7 @@ And the apur dataset is coming from an ArcGIS Server :-(
 
 So with just a free account on <https://developers.arcgis.com/> (you get 50 credits, enough to play and host 200mb+ of data), you can upload the data on your own account and then use it in your app.
 
-<https://www.arcgis.com/home/item.html?id=739c3c3d463f4ff2b594c683364d3874>
+<http://esrifrance.maps.arcgis.com/home/item.html?id=d50dd448c80e46cdbcee8adcd9945a0f>
 
 
 Then replace some variables and enjoy.
